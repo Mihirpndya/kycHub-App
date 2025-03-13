@@ -5,15 +5,16 @@ import Navbar from "./Navbar";
 const { Content } = AntLayout;
 
 const Layout = ({ children }) => {
-    return (
-        <AntLayout style={{ minHeight: "100vh" }}>
-            <Sidebar />
-            <AntLayout>
-                <Navbar />
-                <Content style={{ padding: "20px" }}>{children}</Content>
-            </AntLayout>
-        </AntLayout>
-    );
+	return (
+		<AntLayout style={{ minHeight: "100vh" }}>
+			<Navbar />
+
+			<AntLayout>
+				<Sidebar />
+				<Content style={{ padding: "20px" }}>{children}</Content>
+			</AntLayout>
+		</AntLayout>
+	);
 };
 
 export default Layout;

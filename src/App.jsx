@@ -1,7 +1,7 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import ProductDetails from "./pages/ProductDetails";
 import CompareProducts from "./pages/CompareProducts";
-import Layout from "./components/Layout";
+import Layout from "./Components/Layout";
 import { CompareProvider } from "./context/CompareContext";
 
 const App = () => {
