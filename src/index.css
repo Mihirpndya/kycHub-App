@@ -1,2 +1,27 @@
 @import "tailwindcss";
 
+/* Highlight products that are added to the compare list */
+.highlighted-row {
+    background-color: #e6f7ff !important; /* Light blue background */
+    font-weight: bold;
+}
+
+/* Ensure the table remains responsive */
+.ant-table-wrapper {
+    overflow-x: auto;
+}
+
+/* Improve the remove button in the compare list */
+.compare-remove-btn {
+    background-color: #ff4d4f;
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.2s ease-in-out;
+}
+
+.compare-remove-btn:hover {
+    background-color: #d9363e;
+}

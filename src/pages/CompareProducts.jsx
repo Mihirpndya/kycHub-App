@@ -41,7 +41,7 @@ const CompareProducts = () => {
 								))}
 							</tr>
 						</thead>
-						<tbody >
+						<tbody>
 							{[
 								"description",
 								"price",
@@ -67,7 +67,9 @@ const CompareProducts = () => {
 								{compareList.map((product) => (
 									<td key={product.id} className="p-2">
 										<Button
-											type="danger"
+											type="primary"
+											danger
+											className="px-3 py-1 rounded-md shadow-md hover:bg-red-600 transition-all duration-200"
 											onClick={() => removeFromCompare(product.id)}
 										>
 											Remove
@@ -95,7 +97,6 @@ const CompareProducts = () => {
 				footer={null}
 				title="Add Products"
 				width="80%" // Auto width
-				
 			>
 				<div className="max-h-[400px] overflow-y-auto">
 					<ProductTable filterOut={compareList} />

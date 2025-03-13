@@ -1,11 +1,12 @@
 import { useState, useEffect, useContext, useMemo } from "react";
-import { Table, Button, Skeleton, notification } from "antd";
+import { Table, Button, Skeleton, notification, Tag } from "antd";
 import { CompareContext } from "../context/CompareContext";
 import { useNavigate } from "react-router-dom";
 import { useMediaQuery } from "react-responsive";
 
 const ProductDetails = () => {
-	const { compareList, addToCompare, removeFromCompare } = useContext(CompareContext);
+	const { compareList, addToCompare, removeFromCompare } =
+		useContext(CompareContext);
 	const [products, setProducts] = useState([]);
 	const [loading, setLoading] = useState(true);
 	const navigate = useNavigate();
@@ -21,7 +22,10 @@ const ProductDetails = () => {
 				const data = await response.json();
 				setProducts(data.products);
 			} catch (error) {
-				notification.error({ message: "Error fetching products", description: error.message });
+				notification.error({
+					message: "Error fetching products",
+					description: error.message,
+				});
 			} finally {
 				setLoading(false);
 			}
@@ -47,14 +51,23 @@ const ProductDetails = () => {
 				title: "Title",
 				dataIndex: "title",
 				key: "title",
-				render: (text) => <div className="p-2 text-sm md:text-base">{text}</div>,
+				render: (text, product) => (
+					<div className="p-2 flex items-center gap-2 text-sm md:text-base">
+						<span>{text}</span>
+						{compareList.some((p) => p.id === product.id) && (
+							<Tag color="blue">In Compare</Tag>
+						)}
+					</div>
+				),
 			},
 			{
 				title: "Price ($)",
 				dataIndex: "price",
 				key: "price",
 				sorter: (a, b) => a.price - b.price,
-				render: (price) => <div className="p-2 text-sm md:text-base">${price.toFixed(2)}</div>,
+				render: (price) => (
+					<div className="p-2 text-sm md:text-base">${price.toFixed(2)}</div>
+				),
 			},
 			{
 				title: "Action",
@@ -62,13 +75,22 @@ const ProductDetails = () => {
 				render: (_, product) => (
 					<div className="p-2">
 						<Button
-							type={compareList.some((p) => p.id === product.id) ? "default" : "primary"}
+							type={
+								compareList.some((p) => p.id === product.id)
+									? "default"
+									: "primary"
+							}
 							size={isMobile ? "small" : "middle"}
 							className="w-full md:w-auto"
-							disabled={compareList.length >= 4 && !compareList.some((p) => p.id === product.id)}
+							disabled={
+								compareList.length >= 4 &&
+								!compareList.some((p) => p.id === product.id)
+							}
 							onClick={() => handleCompare(product)}
 						>
-							{compareList.some((p) => p.id === product.id) ? "Remove" : "Compare"}
+							{compareList.some((p) => p.id === product.id)
+								? "Remove"
+								: "Compare"}
 						</Button>
 					</div>
 				),
@@ -113,7 +135,9 @@ const ProductDetails = () => {
 						pagination={{ pageSize: isMobile ? 3 : 5 }}
 						bordered
 						rowClassName={(record) =>
-							compareList.some((p) => p.id === record.id) ? "bg-blue-100 font-semibold" : ""
+							compareList.some((p) => p.id === record.id)
+								? "bg-blue-100 font-semibold"
+								: ""
 						}
 					/>
 				</div>
