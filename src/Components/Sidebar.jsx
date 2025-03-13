@@ -1,55 +1,72 @@
-import { Layout, Menu, Button, Badge } from "antd";
+import { Layout, Menu, Button } from "antd";
 import { Link, useLocation } from "react-router-dom";
-import { ShoppingOutlined } from "@ant-design/icons";
-import { useContext } from "react";
+import {
+	MenuOutlined,
+	AppstoreOutlined,
+	SwapOutlined,
+} from "@ant-design/icons";
+import { useContext, useEffect } from "react";
 import { CompareContext } from "../context/CompareContext";
-import { useNavigate } from "react-router-dom";
+import { useMediaQuery } from "react-responsive";
 
 const { Sider } = Layout;
 
-const Sidebar = () => {
+const Sidebar = ({ collapsed, setCollapsed }) => {
 	const location = useLocation();
-	const currentPath = location.pathname;
 	const { compareList } = useContext(CompareContext);
-	const navigate = useNavigate();
 	const MAX_COMPARE_ITEMS = 4;
 
-	// Determine which menu item should be selected based on the current path
-	const getSelectedKey = () => {
-		if (currentPath === "/") return "1";
-		if (currentPath === "/compare") return "2";
-		return "";
-	};
+	const isMobile = useMediaQuery({ query: "(max-width: 768px)" });
 
-	const handleRedirectToCompare = () => {
-		if (compareList.length > 0) {
-			navigate("/compare");
-		} else {
-			notification.info({
-				message: "No products to compare",
-				description: "Please add at least one product to the comparison list.",
-				placement: "top",
-				duration: 2,
-			});
-		}
-	};
+	// Collapse sidebar automatically on mobile
+	useEffect(() => {
+		setCollapsed(isMobile);
+	}, [isMobile, setCollapsed]);
 
-	const items = [
-		{ key: "1", label: <Link to="/">Product Details</Link> },
+	const getSelectedKey = () => (location.pathname === "/compare" ? "2" : "1");
+
+	const menuItems = [
+		{
+			key: "1",
+			icon: <AppstoreOutlined />,
+			label: <Link to="/">Product Details</Link>,
+		},
 		{
 			key: "2",
+			icon: <SwapOutlined />,
 			label: (
 				<Link to="/compare">
-					Compare Products ({compareList.length}/{MAX_COMPARE_ITEMS})
+					Compare ({compareList.length}/{MAX_COMPARE_ITEMS})
 				</Link>
 			),
 		},
 	];
 
 	return (
-		<Sider style={{ background: "#fff" }}>
-			<Menu mode="vertical" items={items} selectedKeys={[getSelectedKey()]} />
-		</Sider>
+		<>
+			<Sider
+				collapsible
+				collapsed={collapsed}
+				onCollapse={(value) => setCollapsed(value)}
+				breakpoint="md"
+				collapsedWidth={isMobile ? 60 : 80} // Keeps icons visible
+				width={220}
+				style={{
+					position: "fixed",
+					left: 0,
+					height: "100vh",
+					zIndex: 1000,
+					background: "#fff",
+					transition: "all 0.3s ease-in-out",
+				}}
+			>
+				<Menu
+					mode="vertical"
+					items={menuItems}
+					selectedKeys={[getSelectedKey()]}
+				/>
+			</Sider>
+		</>
 	);
 };
 
