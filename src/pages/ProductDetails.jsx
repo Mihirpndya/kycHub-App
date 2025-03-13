@@ -11,7 +11,7 @@ const ProductDetails = () => {
 	const [loading, setLoading] = useState(true);
 	const navigate = useNavigate();
 
-	// Detect screen size (mobile screens below 768px)
+	
 	const isMobile = useMediaQuery({ query: "(max-width: 768px)" });
 
 	useEffect(() => {
@@ -44,7 +44,7 @@ const ProductDetails = () => {
 		}
 	};
 
-	// Define columns based on screen size
+	
 	const columns = useMemo(() => {
 		const baseColumns = [
 			{
