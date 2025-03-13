@@ -2,12 +2,16 @@ import { useState, useEffect, useContext, useMemo } from "react";
 import { Table, Button, Skeleton, notification } from "antd";
 import { CompareContext } from "../context/CompareContext";
 import { useNavigate } from "react-router-dom";
+import { useMediaQuery } from "react-responsive";
 
 const ProductDetails = () => {
 	const { compareList, addToCompare, removeFromCompare } = useContext(CompareContext);
 	const [products, setProducts] = useState([]);
 	const [loading, setLoading] = useState(true);
 	const navigate = useNavigate();
+
+	// Detect screen size (mobile screens below 768px)
+	const isMobile = useMediaQuery({ query: "(max-width: 768px)" });
 
 	useEffect(() => {
 		const fetchData = async () => {
@@ -36,47 +40,31 @@ const ProductDetails = () => {
 		}
 	};
 
-	const columns = useMemo(
-		() => [
+	// Define columns based on screen size
+	const columns = useMemo(() => {
+		const baseColumns = [
 			{
 				title: "Title",
 				dataIndex: "title",
 				key: "title",
-				render: (text) => <div style={{ padding: "12px" }}>{text}</div>,
-			},
-			{
-				title: "Description",
-				dataIndex: "description",
-				key: "description",
-				render: (text) => <div style={{ padding: "12px" }}>{text}</div>,
+				render: (text) => <div className="p-2 text-sm md:text-base">{text}</div>,
 			},
 			{
 				title: "Price ($)",
 				dataIndex: "price",
 				key: "price",
 				sorter: (a, b) => a.price - b.price,
-				render: (price) => <div style={{ padding: "12px" }}>${price.toFixed(2)}</div>,
-			},
-			{
-				title: "Discount (%)",
-				dataIndex: "discountPercentage",
-				key: "discountPercentage",
-				sorter: (a, b) => a.discountPercentage - b.discountPercentage,
-				render: (discount) => <div style={{ padding: "12px" }}>{discount.toFixed(1)}%</div>,
-			},
-			{
-				title: "Brand",
-				dataIndex: "brand",
-				key: "brand",
-				render: (brand) => <div style={{ padding: "12px" }}>{brand}</div>,
+				render: (price) => <div className="p-2 text-sm md:text-base">${price.toFixed(2)}</div>,
 			},
 			{
 				title: "Action",
 				key: "action",
 				render: (_, product) => (
-					<div style={{ padding: "12px" }}>
+					<div className="p-2">
 						<Button
 							type={compareList.some((p) => p.id === product.id) ? "default" : "primary"}
+							size={isMobile ? "small" : "middle"}
+							className="w-full md:w-auto"
 							disabled={compareList.length >= 4 && !compareList.some((p) => p.id === product.id)}
 							onClick={() => handleCompare(product)}
 						>
@@ -85,9 +73,27 @@ const ProductDetails = () => {
 					</div>
 				),
 			},
-		],
-		[compareList]
-	);
+		];
+
+		if (!isMobile) {
+			baseColumns.splice(1, 0, {
+				title: "Features",
+				dataIndex: "description",
+				key: "description",
+				render: (text) => <div className="p-2">{text}</div>,
+			});
+
+			baseColumns.splice(3, 0, {
+				title: "Discount (%)",
+				dataIndex: "discountPercentage",
+				key: "discountPercentage",
+				sorter: (a, b) => a.discountPercentage - b.discountPercentage,
+				render: (discount) => <div className="p-2">{discount.toFixed(1)}%</div>,
+			});
+		}
+
+		return baseColumns;
+	}, [compareList, isMobile]);
 
 	return (
 		<div className="p-4">
@@ -99,14 +105,13 @@ const ProductDetails = () => {
 					))}
 				</div>
 			) : (
-				<div className="max-h-[500px] overflow-auto border rounded-lg shadow-md">
+				<div className="overflow-x-auto max-h-[500px] border rounded-lg shadow-md">
 					<Table
 						dataSource={products}
 						columns={columns}
 						rowKey="id"
-						pagination={{ pageSize: 5 }}
+						pagination={{ pageSize: isMobile ? 3 : 5 }}
 						bordered
-						// Highlighting rows for products in the compare list
 						rowClassName={(record) =>
 							compareList.some((p) => p.id === record.id) ? "bg-blue-100 font-semibold" : ""
 						}
