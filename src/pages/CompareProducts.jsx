@@ -94,7 +94,8 @@ const CompareProducts = () => {
 				onCancel={() => setIsModalOpen(false)}
 				footer={null}
 				title="Add Products"
-				width={800}
+				width="80%" // Auto width
+				
 			>
 				<div className="max-h-[400px] overflow-y-auto">
 					<ProductTable filterOut={compareList} />

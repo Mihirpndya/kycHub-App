@@ -40,10 +40,7 @@ const ProductTable = ({ filterOut = [] }) => {
 			title: "Action",
 			key: "action",
 			render: (_, product) => (
-				<Button
-					type="primary"
-					onClick={() => addToCompare(product)}
-				>
+				<Button type="primary" onClick={() => addToCompare(product)}>
 					Compare
 				</Button>
 			),
@@ -56,7 +53,16 @@ const ProductTable = ({ filterOut = [] }) => {
 			<p className="ml-2 text-gray-600">Loading products...</p>
 		</div>
 	) : (
-		<Table dataSource={products} columns={columns} pagination rowKey="id" />
+		<div className="w-full h-[500px] overflow-hidden">
+			<Table
+				dataSource={products}
+				columns={columns}
+				pagination={false} // Disable pagination if you want full scrollability
+				rowKey="id"
+				scroll={{ y: 400 }} // Enables vertical scrolling inside the table
+				className="min-w-[600px] sm:min-w-full"
+			/>
+		</div>
 	);
 };
 
