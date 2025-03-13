@@ -18,7 +18,7 @@ const Sidebar = ({ collapsed, setCollapsed }) => {
 
 	const isMobile = useMediaQuery({ query: "(max-width: 768px)" });
 
-	// Collapse sidebar automatically on mobile
+	
 	useEffect(() => {
 		setCollapsed(isMobile);
 	}, [isMobile, setCollapsed]);
@@ -49,7 +49,7 @@ const Sidebar = ({ collapsed, setCollapsed }) => {
 				collapsed={collapsed}
 				onCollapse={(value) => setCollapsed(value)}
 				breakpoint="md"
-				collapsedWidth={isMobile ? 60 : 80} // Keeps icons visible
+				collapsedWidth={isMobile ? 60 : 80} 
 				width={220}
 				style={{
 					position: "fixed",
