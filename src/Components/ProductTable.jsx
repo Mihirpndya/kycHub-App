@@ -12,7 +12,7 @@ const ProductTable = ({ filterOut = [] }) => {
 		fetch("https://dummyjson.com/products")
 			.then((res) => res.json())
 			.then((data) => {
-				// Exclude products already in compareList
+				
 				const filteredProducts = data.products.filter(
 					(product) => !filterOut.some((p) => p.id === product.id)
 				);
@@ -57,9 +57,9 @@ const ProductTable = ({ filterOut = [] }) => {
 			<Table
 				dataSource={products}
 				columns={columns}
-				pagination={false} // Disable pagination if you want full scrollability
+				pagination={false} 
 				rowKey="id"
-				scroll={{ y: 400 }} // Enables vertical scrolling inside the table
+				scroll={{ y: 400 }} 
 				className="min-w-[600px] sm:min-w-full"
 			/>
 		</div>
