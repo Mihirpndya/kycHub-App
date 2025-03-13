@@ -9,7 +9,7 @@ const CompareProducts = () => {
 	const { compareList, removeFromCompare } = useContext(CompareContext);
 	const [isModalOpen, setIsModalOpen] = useState(false);
 
-	// Effect to auto-close the modal when max items are added
+	
 	useEffect(() => {
 		if (compareList.length >= MAX_COMPARE_ITEMS && isModalOpen) {
 			setIsModalOpen(false);
@@ -96,7 +96,7 @@ const CompareProducts = () => {
 				onCancel={() => setIsModalOpen(false)}
 				footer={null}
 				title="Add Products"
-				width="80%" // Auto width
+				width="80%" 
 			>
 				<div className="max-h-[400px] overflow-y-auto">
 					<ProductTable filterOut={compareList} />
