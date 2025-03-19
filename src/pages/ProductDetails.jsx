@@ -132,7 +132,7 @@ const ProductDetails = () => {
 						dataSource={products}
 						columns={columns}
 						rowKey="id"
-						pagination={{ pageSize: isMobile ? 3 : 5 }}
+						pagination={{ pageSize: 10 }}
 						bordered
 						rowClassName={(record) =>
 							compareList.some((p) => p.id === record.id)
