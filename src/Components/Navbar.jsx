@@ -11,6 +11,8 @@ const Navbar = () => {
 				display: "flex",
 				justifyContent: "space-between",
 				alignItems: "center",
+				position:"fixed",
+				top: "0"
 			}}
 		>
 			<h2>Product App</h2>
